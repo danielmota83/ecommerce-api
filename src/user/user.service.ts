@@ -83,7 +83,7 @@ export class UserService {
 
     if (dto.cpf) {
       if (!cpf.isValid(dto.cpf)) {
-        throw new BadRequestException('CPF não é valido');
+        throw new BadRequestException('CPF invalido');
       }
     }
 

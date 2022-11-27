@@ -5,40 +5,33 @@ export class CreateUserDto {
   @IsString()
   @ApiProperty({
     description: 'Usuário',
-    example: 'Lazaro',
+    example: 'Daniel',
   })
   name: string;
 
   @IsString()
   @ApiProperty({
-    description: 'Nickname do usuário',
-    example: 'lazaroKiller',
-  })
-  nickname: string;
-
-  @IsString()
-  @ApiProperty({
     description: 'Email do usuário',
-    example: 'LazaroKiller@hotmail.com',
+    example: 'daniel@daniel.com',
   })
   email: string;
 
   @IsString()
   @MinLength(6)
-  @Matches(/(?![.\n])(?=.*[a-z]).*$/, {
-    // @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+  @Matches(/(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+    //REGEX para senha ter letra maíscula, minúscula e número.
     message: 'Senha muito fraca',
   })
   @ApiProperty({
     description: 'Senha de acesso do usuário',
-    example: 'Lzra@16376',
+    example: 'Dani*123',
   })
   password: string;
 
   @IsString()
   @ApiProperty({
-    description: 'A confirmação da senha deve ser igual a senha de login',
-    example: 'Lzra@16376',
+    description: 'As senhas devem ser iguais',
+    example: 'Dani*123',
   })
   confirmPassword: string;
 
@@ -46,7 +39,7 @@ export class CreateUserDto {
   @MaxLength(15)
   @ApiProperty({
     description: 'CPF do usuário',
-    example: '48071261564',
+    example: '79627815217',
   })
   cpf: string;
 
