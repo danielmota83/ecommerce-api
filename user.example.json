@@ -1,0 +1,8 @@
+{
+    "name": "Example",
+    "email": "example@gmail.com",
+    "password": "Example*123",
+    "confirmPassword": "Example*123",
+    "cpf": "66114111605"
+    
+    }
