@@ -1,8 +1,10 @@
-export interface IUserEntity {
-  id: string;
+export interface User {
+  id?: string;
   name: string;
   email: string;
   password: string;
   cpf: string;
-  role: string;
+  isAdmin: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
