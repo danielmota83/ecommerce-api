@@ -10,7 +10,7 @@ export class AppController {
 
   @Get()
   @ApiOperation({
-    summary: 'Visualizar status da aplicação',
+    summary: 'Visualizar status da api',
   })
   getAppStatus(@Req() req: Request) {
     const baseUrl = req.protocol + '://' + req.get('host');
