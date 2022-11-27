@@ -35,7 +35,7 @@ export class UserService {
   }
 
   async findById(id: string): Promise<User> {
-    const record = await this.prisma.user.findUnique({
+    const foundUser = await this.prisma.user.findUnique({
       where: { id },
       select: {
         id: true,
@@ -47,11 +47,11 @@ export class UserService {
       },
     });
 
-    if (!record) {
+    if (!foundUser) {
       throw new NotFoundException("Registro com o Id '${id}' não encontrado.");
     }
 
-    return record;
+    return foundUser;
   }
 
   async findOne(id: string): Promise<User> {

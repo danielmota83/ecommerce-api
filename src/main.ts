@@ -9,8 +9,9 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('e-commerce')
-    .setDescription('Aplicação teste')
+    .setTitle('api_e-commerce')
+    .setDescription('Api for full stack course')
+    .setVersion('1.0.0')
     .addTag('users')
     .build();
 
