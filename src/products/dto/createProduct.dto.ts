@@ -33,12 +33,12 @@ export class CreateProductDto {
     description: 'Pontuação do produto',
     example: 4,
   })
-  cutumerScore: number;
+  customerScore: number;
 
   @IsUrl()
   @ApiProperty({
     description: 'Trailer review do produto',
-    example: 'https://www.youtube.com/watch?v=eaW0tYpxyp0',
+    example: 'https://youtu.be/SQLyIJTIeCM',
   })
   trailerYoutubeUrl: string;
 }
