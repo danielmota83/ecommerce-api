@@ -5,7 +5,7 @@ export class Product {
   description: string;
   price: string;
   customerScore: number;
-  trailerYoutubeUrl: string;
+  quantity: number;
   createdAt?: Date;
   updatedAt?: Date;
 }

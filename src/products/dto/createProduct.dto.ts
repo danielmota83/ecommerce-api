@@ -23,6 +23,7 @@ export class CreateProductDto {
   })
   description: string;
 
+  @IsString()
   @ApiProperty({
     description: 'Preço do produto',
     example: 'R$300,00',
@@ -35,10 +36,9 @@ export class CreateProductDto {
   })
   customerScore: number;
 
-  @IsUrl()
   @ApiProperty({
-    description: 'Trailer review do produto',
-    example: 'https://youtu.be/SQLyIJTIeCM',
+    description: 'Quantidade de itens do produto selecionado',
+    example: 2,
   })
-  trailerYoutubeUrl: string;
+  quantity: number;
 }
