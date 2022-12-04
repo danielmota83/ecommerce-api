@@ -44,10 +44,10 @@ export class ProductsService {
       const data: Prisma.ProductsCreateInput = {
         title: createProductDto.title,
         coverImageUrl: createProductDto.coverImageUrl,
-        year: createProductDto.price,
+        price: createProductDto.price,
         description: createProductDto.description,
         customerScore: createProductDto.customerScore,
-        trailerYoutubeUrl: createProductDto.trailerYoutubeUrl,
+        quantity: createProductDto.quantity,
       };
 
       return await this.prisma.product
@@ -74,7 +74,7 @@ export class ProductsService {
         description: updateProductDto.description,
         price: updateProductDto.price,
         customerScore: updateProductDto.customerScore,
-        trailerYoutubeUrl: updateProductDto.trailerYoutubeUrl,
+        quantity: updateProductDto.quantity,
       };
 
       return this.prisma.product.update({
