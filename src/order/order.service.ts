@@ -15,43 +15,6 @@ import { Order } from './entities/order.entity';
 export class OrdersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  //   findAll(): Promise<Order[]> {
-  //     return this.prisma.orders.findMany({
-  //       include: {
-  //         gamesOrder: {
-  //           select: {
-  //             id: true,
-  //             title: true,
-  //           },
-  //         },
-  //       },
-  //     });
-  //   }
-
-  //   async findById(id: string): Promise<Order> {
-  //     const record = await this.prisma.orders.findUnique({
-  //       where: { id },
-  //       include: {
-  //         gamesOrder: {
-  //           select: {
-  //             id: true,
-  //             title: true,
-  //           },
-  //         },
-  //       },
-  //     });
-
-  //     if (!record) {
-  //       throw new NotFoundException(`Registro com o Id '${id}' não encontrado.`);
-  //     }
-
-  //     return record;
-  //   }
-
-  //   findOne(id: string): Promise<Order> {
-  //     return this.findById(id);
-  //   }
-
   create(createOrderDto: CreateOrderDto, user: User): Promise<Order> {
     if (loggedUser) {
       const data: Prisma.ordersCreateInput = {
@@ -69,36 +32,24 @@ export class OrdersService {
     updateOrderDto: UpdateOrderDto,
     user: User,
   ): Promise<Order> {
-    if (user.isAdmin) {
-      await this.findById(id);
+    await this.findById(id);
 
-      const data: Prisma.OrdersUpdateInput = {
-        name: updateOrderDto.name,
-      };
+    const data: Prisma.OrdersUpdateInput = {
+      name: updateOrderDto.name,
+    };
 
-      return this.prisma.Orders.update({
-        where: { id },
-        data,
-      });
-    } else {
-      throw new UnauthorizedException(
-        'Usuário não tem permissão. Caso isso esteja errado, contate o ADMIN!',
-      );
-    }
+    return this.prisma.Orders.update({
+      where: { id },
+      data,
+    });
   }
 
   async delete(id: string, user: User) {
-    if (user.isAdmin) {
-      await this.findById(id);
+    await this.findById(id);
 
-      await this.prisma.Orders.delete({
-        where: { id },
-      }).catch(this.handleError);
-    } else {
-      throw new UnauthorizedException(
-        'Usuário não tem permissão. Caso isso esteja errado, contate o ADMIN!',
-      );
-    }
+    await this.prisma.Orders.delete({
+      where: { id },
+    }).catch(this.handleError);
   }
 
   handleError(error: Error): undefined {
