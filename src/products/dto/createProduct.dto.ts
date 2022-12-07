@@ -14,7 +14,7 @@ export class CreateProductDto {
     description: 'Imagem do produto',
     example: 'https://imgs.ponto.com.br/55004527/1xg.jpg',
   })
-  coverImageUrl: string;
+  imageUrl: string;
 
   @IsString()
   @ApiProperty({
