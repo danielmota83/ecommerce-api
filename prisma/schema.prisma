@@ -18,4 +18,78 @@ model User {
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
 
+  userAddress UserAddress []
+  order Order[]
+
+ }
+
+ model UserAddress {
+  id       String  @id @default(uuid())
+  addressType     String @unique
+  addressInfo    String 
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
+
+  createAt DateTime @default(now()) @map("created_at")
+  updateAt DateTime @updatedAt @map("updated_at")
+
+  cart Cart []
+
+ }
+
+ model Product {
+  id        String  @id @default(uuid())
+  title     String 
+  imageUrl  String
+  description String
+  price Int 
+  customerScore Int
+
+  order Order []
+
+ }
+
+  model Order {
+  id       String  @id @default(uuid())
+  orderDetails     String 
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
+
+  cart   Cart   @relation(fields: [cartId], references: [id])
+  cartId String @map("cart_id")
+
+  createAt DateTime @default(now()) @map("created_at")
+  updateAt DateTime @updatedAt @map("updated_at")
+
+  product Product[]
+
+ }
+
+   model Cart {
+  id       String  @id @default(uuid())
+  orderDetails     String 
+  payment   Payment? 
+
+  shipping Int
+  totalPrice Int
+   
+
+  createAt DateTime @default(now()) @map("created_at")
+  updateAt DateTime @updatedAt @map("updated_at")
+
+  order Order[]
+  userAddress UserAddress[]
+
+ }
+
+   model Payment {
+  id       String  @id @default(uuid())
+  orderDetails     String 
+  cart   Cart?   @relation(fields: [cartId], references: [id])
+  cartId String @map("cart_id") @unique
+  status Boolean
+
+  createAt DateTime @default(now()) @map("created_at")
+  updateAt DateTime @updatedAt @map("updated_at")
+
  }
