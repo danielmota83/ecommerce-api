@@ -8,5 +8,5 @@ export class Cart {
   order?: Order[];
   userAddress?: UserAddress;
   shipping: number;
-  totalprice: number;
+  totalPrice: number;
 }
