@@ -1,11 +1,10 @@
 export class Product {
   id?: string;
   title: string;
-  coverImageUrl: string;
+  imageUrl: string;
   description: string;
-  price: string;
+  price: number;
   customerScore: number;
-  quantity: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
