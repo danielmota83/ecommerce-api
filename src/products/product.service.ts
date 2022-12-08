@@ -70,11 +70,10 @@ export class ProductsService {
     if (user.isAdmin) {
       const data: Prisma.ProductsUpdateInput = {
         title: updateProductDto.title,
-        coverImageUrl: updateProductDto.coverImageUrl,
+        imageUrl: updateProductDto.imageUrl,
         description: updateProductDto.description,
         price: updateProductDto.price,
         customerScore: updateProductDto.customerScore,
-        quantity: updateProductDto.quantity,
       };
 
       return this.prisma.product.update({
