@@ -12,44 +12,120 @@ import { UpdateOrderDto } from './dto/updateOrder.dto';
 import { Order } from './entities/order.entity';
 
 @Injectable()
-export class OrdersService {
+export class OrderService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createOrderDto: CreateOrderDto, user: User): Promise<Order> {
-    if (loggedUser) {
-      const data: Prisma.ordersCreateInput = {
-        orderDetails: createOrderDto.orderDetails,
-      };
+  findAll(): Promise<Order[]> {
+    return this.prisma.orders.findMany({
+      include: {
+        productsOrder: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+      },
+    });
+  }
 
-      return this.prisma.orders.create({ data }).catch(this.handleError);
-    } else {
-      throw new UnauthorizedException('Usuário não está logado');
+  async findById(id: string): Promise<Order> {
+    const record = await this.prisma.orders.findUnique({
+      where: { id },
+      include: {
+        productOrder: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+      },
+    });
+
+    if (!record) {
+      throw new NotFoundException(`Registro com o Id '${id}' não encontrado.`);
+    }
+
+    return record;
+  }
+
+  findOne(id: string): Promise<Order> {
+    return this.findById(id);
+  }
+
+  create(userId: string, createOrderDto: CreateOrderDto) {
+    const data: Prisma.OrderCreateInput = {
+      user: {
+        connect: {
+          id: userId,
+        },
+      },
+      products: {
+        createMany: {
+          data: createOrderDto.products.map((createOrderProductDto) => ({
+            productId: createOrderProductDto.productId,
+            orderDetails: createOrderProductDto.orderDetails,
+          })),
+        },
+      },
+    };
+
+    try {
+      return this.prisma.order.create({
+        data,
+        select: {
+          id: true,
+          user: {
+            select: {
+              name: true,
+            },
+          },
+          products: {
+            select: {
+              quantity: true,
+              description: true,
+              product: {
+                select: {
+                  title: true,
+                },
+              },
+            },
+          },
+        },
+      });
+    } catch (error) {
+      return this.handleError;
     }
   }
 
-  async update(
-    id: string,
-    updateOrderDto: UpdateOrderDto,
-    user: User,
-  ): Promise<Order> {
-    await this.findById(id);
-
-    const data: Prisma.OrdersUpdateInput = {
-      name: updateOrderDto.name,
+  update(id: string, updateOrderDto: UpdateOrderDto) {
+    const data: Prisma.OrderUpdateInput = {
+      orderDetails: updateOrderDto.orderDetails,
+      user: {
+        connect: {
+          id: updateOrderDto.productId,
+        },
+      },
     };
 
-    return this.prisma.Orders.update({
+    return this.prisma.order.update({
       where: { id },
       data,
     });
   }
-
   async delete(id: string, user: User) {
-    await this.findById(id);
+    if (user.isAdmin) {
+      await this.findById(id);
 
-    await this.prisma.Orders.delete({
-      where: { id },
-    }).catch(this.handleError);
+      await this.prisma.orders
+        .delete({
+          where: { id },
+        })
+        .catch(this.handleError);
+    } else {
+      throw new UnauthorizedException(
+        'Usuário não tem permissão. Caso isso esteja errado, contate o ADMIN!',
+      );
+    }
   }
 
   handleError(error: Error): undefined {
