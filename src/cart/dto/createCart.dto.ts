@@ -10,9 +10,9 @@ export class CreateCartDto {
   @Type(() => CreateCartOrderDto)
   @ApiProperty({
     description: 'Id da ordem de compra',
-    example: '6e6c4e46-37dd-4bfc-8abc-495e8b151b40',
+    type: [CreateCartOrderDto],
   })
-  orders: CreateCartDto[];
+  orders: CreateCartOrderDto[];
 
   @IsUUID()
   @ApiProperty({
@@ -24,7 +24,7 @@ export class CreateCartDto {
   @Type(() => CreateCartOrderDto)
   @ApiProperty({
     description: 'Id do tipo de endereço selecionado',
-    example: '6e6c4e46-37dd-4bfc-8abc-495e8b151b40',
+    type: [CreateCartOrderDto],
   })
-  useAdress: CreateCartDto[];
+  useAdress: CreateCartOrderDto[];
 }
