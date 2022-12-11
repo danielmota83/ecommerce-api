@@ -1,13 +1,13 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class LoginDto {
-  @IsString()
+  @IsEmail()
   @IsNotEmpty()
   @ApiProperty({
-    description: 'E-mail do usuário',
-    example: 'pedroaolive@gmail.com',
+    description: 'e-mail do usuário',
+    example: 'daniel@dani.com',
   })
   email: string;
 
@@ -15,11 +15,9 @@ export class LoginDto {
   @IsNotEmpty()
   @ApiProperty({
     description: 'Senha do usuário',
-    example: 'Pa44528033#',
+    example: 'Danie123*',
   })
   password: string;
 }
 
-// admin =
-// "nicname": "Destino_veleiro"
-// "password": "Pxl@4568#"
+
