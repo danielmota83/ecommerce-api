@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { User } from 'src/user/entities/user.entity';
 import { CreateCartDto } from './dto/createCart.dto';
 import { UpdateCartDto } from './dto/updateCart.dto';
 import { Cart } from './entities/cart.entity';
@@ -19,10 +18,10 @@ export class CartService {
     const record = await this.prisma.carts.findUnique({
       where: { id },
       include: {
-        productCart: {
+        OrderCart: {
           select: {
             id: true,
-            title: true,
+            orderDetails: true,
           },
         },
       },
@@ -39,11 +38,11 @@ export class CartService {
     return this.findById(id);
   }
 
-  create(userId: string, createCartDto: CreateCartDto) {
+  create(orderId: string, createCartDto: CreateCartDto) {
     const data: Prisma.CartCreateInput = {
-      user: {
+      order: {
         connect: {
-          id: userId,
+          id: orderId,
         },
       },
       orders: {
@@ -61,11 +60,6 @@ export class CartService {
         data,
         select: {
           id: true,
-          user: {
-            select: {
-              name: true,
-            },
-          },
           orders: {
             select: {
               oderDetails: true,
@@ -92,7 +86,7 @@ export class CartService {
     const data: Prisma.CartUpdateInput = {
       shipping: updateCartDto.shipping,
       totalPrice: updateCartDto.totalPrice,
-      user: {
+      order: {
         connect: {
           id: updateCartDto.orderId,
         },
