@@ -29,16 +29,4 @@ export class CreateProductDto {
     example: 'R$300,00',
   })
   price: string;
-
-  @ApiProperty({
-    description: 'Pontuação do produto',
-    example: 4,
-  })
-  customerScore: number;
-
-  @ApiProperty({
-    description: 'Quantidade de itens do produto selecionado',
-    example: 2,
-  })
-  quantity: number;
 }

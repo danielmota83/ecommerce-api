@@ -4,7 +4,6 @@ export class Product {
   imageUrl: string;
   description: string;
   price: number;
-  customerScore: number;
   createdAt?: Date;
   updatedAt?: Date;
 }

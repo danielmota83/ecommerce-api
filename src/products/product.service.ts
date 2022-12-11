@@ -43,14 +43,12 @@ export class ProductsService {
     if (user.isAdmin) {
       const data: Prisma.ProductsCreateInput = {
         title: createProductDto.title,
-        coverImageUrl: createProductDto.coverImageUrl,
+        imageUrl: createProductDto.imageUrl,
         price: createProductDto.price,
         description: createProductDto.description,
-        customerScore: createProductDto.customerScore,
-        quantity: createProductDto.quantity,
       };
 
-      return await this.prisma.product
+      return await this.prisma.products
         .create({
           data,
         })
@@ -73,10 +71,9 @@ export class ProductsService {
         imageUrl: updateProductDto.imageUrl,
         description: updateProductDto.description,
         price: updateProductDto.price,
-        customerScore: updateProductDto.customerScore,
       };
 
-      return this.prisma.product.update({
+      return this.prisma.products.update({
         where: { id },
         data,
       });
@@ -91,7 +88,7 @@ export class ProductsService {
     if (user.isAdmin) {
       await this.findById(id);
 
-      await this.prisma.product
+      await this.prisma.products
         .delete({
           where: { id },
         })
