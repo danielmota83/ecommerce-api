@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { User } from 'src/user/entities/user.entity';
 import { CreateOrderDto } from './dto/createOrder.dto';
 import { UpdateOrderDto } from './dto/updateOrder.dto';
 import { Order } from './entities/order.entity';
@@ -112,8 +111,8 @@ export class OrderService {
       data,
     });
   }
-  async delete(id: string, user: User) {
-    if (user.isAdmin) {
+  async delete(id: string) {
+    try {
       await this.findById(id);
 
       await this.prisma.orders
@@ -121,7 +120,7 @@ export class OrderService {
           where: { id },
         })
         .catch(this.handleError);
-    } else {
+    } catch {
       throw new UnauthorizedException(
         'Usuário não tem permissão. Caso isso esteja errado, contate o ADMIN!',
       );
