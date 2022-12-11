@@ -1,17 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsUUID } from 'class-validator';
+import { IsEnum, IsUUID } from 'class-validator';
+import { PaymentType } from '../entities/payment.entity';
 
 export class CreatePaymentDto {
-  @IsString()
+  @IsEnum(PaymentType)
   @ApiProperty({
     description: 'Tipo de pagamento',
     example: 'Boleto bancário',
   })
-  paymentType: string;
+  paymentType: PaymentType;
 
   @ApiProperty({
     description: 'Pagamento realizado?',
-    example: 'false',
+    example: false,
   })
   status: boolean;
 
