@@ -9,10 +9,17 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('api_e-commerce')
+    .setTitle('api_ecommerce')
     .setDescription('Api for full stack course')
-    .setVersion('1.0.0')
-    .addTag('users')
+    .setVersion('1.1.0')
+    .addTag('user')
+    .addTag('payment')
+    .addTag('auth')
+    .addTag('userAddress')
+    .addTag('product')
+    .addTag('order')
+    .addTag('cart')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
