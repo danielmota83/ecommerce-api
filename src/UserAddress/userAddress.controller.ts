@@ -35,8 +35,8 @@ export class UserAddressController {
   @ApiOperation({
     summary: 'Lista todos os endereços cadastrados do usuário',
   })
-  findAll(@LoggedUser() user: User) {
-    return this.userAddressService.findAll(user);
+  findAll() {
+    return this.userAddressService.findAll();
   }
 
   @Get(':id')
