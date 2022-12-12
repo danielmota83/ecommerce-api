@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateOrderDto } from './dto/createOrder.dto';
 import { UpdateOrderDto } from './dto/updateOrder.dto';
 import { Order } from './entities/order.entity';
 
@@ -15,9 +14,9 @@ export class OrderService {
   constructor(private readonly prisma: PrismaService) {}
 
   findAll(): Promise<Order[]> {
-    return this.prisma.orders.findMany({
+    return this.prisma.order.findMany({
       include: {
-        productsOrder: {
+        product: {
           select: {
             id: true,
             title: true,
@@ -28,10 +27,10 @@ export class OrderService {
   }
 
   async findById(id: string): Promise<Order> {
-    const record = await this.prisma.orders.findUnique({
+    const record = await this.prisma.order.findUnique({
       where: { id },
       include: {
-        productOrder: {
+        product: {
           select: {
             id: true,
             title: true,
@@ -51,19 +50,25 @@ export class OrderService {
     return this.findById(id);
   }
 
-  create(userId: string, createOrderDto: CreateOrderDto) {
+  create(userId: any) {
     const data: Prisma.OrderCreateInput = {
       user: {
         connect: {
           id: userId,
         },
       },
-      products: {
-        createMany: {
-          data: createOrderDto.products.map((createOrderProductDto) => ({
-            productId: createOrderProductDto.productId,
-            orderDetails: createOrderProductDto.orderDetails,
-          })),
+
+      orderDetails: '',
+      cart: {
+        create: undefined,
+        connectOrCreate: {
+          where: {
+            id: '',
+          },
+          create: undefined,
+        },
+        connect: {
+          id: '',
         },
       },
     };
@@ -78,15 +83,10 @@ export class OrderService {
               name: true,
             },
           },
-          products: {
+          product: {
             select: {
-              quantity: true,
-              description: true,
-              product: {
-                select: {
-                  title: true,
-                },
-              },
+              id: true,
+              title: true,
             },
           },
         },
@@ -115,7 +115,7 @@ export class OrderService {
     try {
       await this.findById(id);
 
-      await this.prisma.orders
+      await this.prisma.order
         .delete({
           where: { id },
         })
