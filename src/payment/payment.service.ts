@@ -1,4 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePaymentDto } from './dto/createPayment.dto';
 import { UpdatePaymentDto } from './dto/updatePayment.dto';
@@ -8,7 +14,7 @@ import { Payment } from './entities/payment.entity';
 export class PaymentService {
   constructor(private readonly prisma: PrismaService) {}
 
-  findAll(): Promise<Payment[]> {
+  findAll() {
     return this.prisma.payment.findMany();
   }
 
@@ -26,32 +32,65 @@ export class PaymentService {
     return this.findById(id);
   }
 
-  create(dto: CreatePaymentDto): Promise<Payment> {
-    const data: Payment = {
-      ...dto,
-      createdAt: undefined,
-      updatedAt: undefined,
+  async create(createPaymentDto: CreatePaymentDto) {
+    const data: Prisma.PaymentCreateInput = {
+      cart: {
+        connect: {
+          id: createPaymentDto.cartId,
+        },
+      },
+      status: createPaymentDto.status,
+      paymentType: createPaymentDto.paymentType,
     };
-
-    return this.prisma.payment.create({ data }).catch(handleError);
+    try {
+      return await this.prisma.payment.create({
+        data,
+        select: {
+          id: true,
+          status: true,
+          cart: true,
+        },
+      });
+    } catch (error) {
+      return this.handleError;
+    }
   }
+  async update(
+    id: string,
+    updatePaymentDto: UpdatePaymentDto,
+  ): Promise<Payment> {
+    try {
+      const data: Prisma.PaymentUpdateInput = {
+        status: updatePaymentDto.status,
+        paymentType: updatePaymentDto.paymentType,
+      };
 
-  async update(id: string, dto: UpdatePaymentDto): Promise<Payment> {
-    await this.findById(id);
-
-    const data: Partial<Payment> = { ...dto };
-
-    return this.prisma.payment
-      .update({
+      return this.prisma.payment.update({
         where: { id },
         data,
-      })
-      .catch(handleError);
+      });
+    } catch {
+      throw new UnauthorizedException(
+        'Usuário não tem permissão. Contate o Administrador!',
+      );
+    }
   }
 
   async delete(id: string) {
     await this.findById(id);
 
     await this.prisma.payment.delete({ where: { id } });
+  }
+  handleError(error: Error): undefined {
+    const errorLines = error.message?.split('\n');
+    const lastErrorLine = errorLines[errorLines.length - 1]?.trim();
+
+    if (!lastErrorLine) {
+      console.error(error);
+    }
+
+    throw new UnprocessableEntityException(
+      lastErrorLine || 'Algum erro ocorreu ao executar a operação',
+    );
   }
 }

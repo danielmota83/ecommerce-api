@@ -8,7 +8,7 @@ export class CreatePaymentDto {
     description: 'Tipo de pagamento',
     example: 'Boleto bancário',
   })
-  paymentType: PaymentType;
+  paymentType: string;
 
   @ApiProperty({
     description: 'Pagamento realizado?',

@@ -7,9 +7,9 @@ export enum PaymentType {
 }
 export class Payment {
   id?: string;
-  paymentType: PaymentType;
+  paymentType: string;
   cart?: Cart;
   status: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

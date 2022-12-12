@@ -29,7 +29,7 @@ export class PaymentController {
     summary: 'Listar todos os pagamentos ',
   })
   findAll(): Promise<Payment[]> {
-    return this.PaymentService.findAll();
+    return this.paymentService.findAll();
   }
 
   @Get(':id')
@@ -37,15 +37,15 @@ export class PaymentController {
     summary: 'Visualizar um pagamento',
   })
   findOne(@Param('id') id: string): Promise<Payment> {
-    return this.PaymentService.findOne(id);
+    return this.paymentService.findOne(id);
   }
 
   @Post()
   @ApiOperation({
     summary: 'Criar um pagamento',
   })
-  create(@Body() dto: CreatePaymentDto): Promise<Payment> {
-    return this.paymentService.create(dto);
+  create(@Body() createPaymentDto: CreatePaymentDto): Promise<any> {
+    return this.paymentService.create(createPaymentDto);
   }
 
   @Patch(':id')
