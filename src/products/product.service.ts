@@ -16,11 +16,11 @@ export class ProductsService {
   constructor(private readonly prisma: PrismaService) {}
 
   findAll(): Promise<Product[]> {
-    return this.prisma.products.findMany({});
+    return this.prisma.product.findMany({});
   }
 
   async findById(id: string): Promise<Product> {
-    const record = await this.prisma.products.findUnique({
+    const record = await this.prisma.product.findUnique({
       where: { id },
       include: {},
     });
@@ -41,14 +41,14 @@ export class ProductsService {
     user: User,
   ): Promise<Product> {
     if (user.isAdmin) {
-      const data: Prisma.ProductsCreateInput = {
+      const data: Prisma.ProductCreateInput = {
         title: createProductDto.title,
         imageUrl: createProductDto.imageUrl,
         price: createProductDto.price,
         description: createProductDto.description,
       };
 
-      return await this.prisma.products
+      return await this.prisma.product
         .create({
           data,
         })
@@ -66,14 +66,14 @@ export class ProductsService {
     user: User,
   ): Promise<Product> {
     if (user.isAdmin) {
-      const data: Prisma.ProductsUpdateInput = {
+      const data: Prisma.ProductUpdateInput = {
         title: updateProductDto.title,
         imageUrl: updateProductDto.imageUrl,
         description: updateProductDto.description,
         price: updateProductDto.price,
       };
 
-      return this.prisma.products.update({
+      return this.prisma.product.update({
         where: { id },
         data,
       });
@@ -88,7 +88,7 @@ export class ProductsService {
     if (user.isAdmin) {
       await this.findById(id);
 
-      await this.prisma.products
+      await this.prisma.product
         .delete({
           where: { id },
         })

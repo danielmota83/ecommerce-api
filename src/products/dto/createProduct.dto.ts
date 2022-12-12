@@ -28,5 +28,5 @@ export class CreateProductDto {
     description: 'Preço do produto',
     example: 'R$300,00',
   })
-  price: string;
+  price: number;
 }
