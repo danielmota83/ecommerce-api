@@ -15,10 +15,10 @@ export class CartService {
   constructor(private readonly prisma: PrismaService) {}
 
   async findById(id: string): Promise<Cart> {
-    const record = await this.prisma.carts.findUnique({
+    const record = await this.prisma.cart.findUnique({
       where: { id },
       include: {
-        OrderCart: {
+        order: {
           select: {
             id: true,
             orderDetails: true,
@@ -45,14 +45,9 @@ export class CartService {
           id: orderId,
         },
       },
-      orders: {
-        createMany: {
-          data: createCartDto.orders.map((createCartOrderDto) => ({
-            shipping: createCartOrderDto.shipping,
-            totalPrice: createCartOrderDto.totalPrice,
-          })),
-        },
-      },
+      shipping: createCartDto.shipping,
+      totalPrice: createCartDto.totalPrice,
+      orderDetails: '',
     };
 
     try {
@@ -60,17 +55,12 @@ export class CartService {
         data,
         select: {
           id: true,
-          orders: {
+          order: {
             select: {
-              oderDetails: true,
+              orderDetails: true,
               product: {
                 select: {
                   title: true,
-                },
-                userAddress: {
-                  select: {
-                    adressInfo: true,
-                  },
                 },
               },
             },

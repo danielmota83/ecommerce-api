@@ -20,4 +20,6 @@ export class CreateCartDto {
     type: [CreateCartOrderDto],
   })
   useAdress: CreateCartOrderDto[];
+  shipping: number;
+  totalPrice: number;
 }
