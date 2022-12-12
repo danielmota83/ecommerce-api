@@ -21,11 +21,12 @@ model User {
   userAddress UserAddress []
   order Order[]
 
+@@map("user")
  }
 
  model UserAddress {
   id       String  @id @default(uuid())
-  addressType     String @unique
+  addressType     String
   addressInfo    String 
   user   User   @relation(fields: [userId], references: [id])
   userId String @map("user_id")
@@ -35,6 +36,7 @@ model User {
 
   cart Cart []
 
+@@map("user_address")
  }
 
  model Product {
@@ -43,10 +45,10 @@ model User {
   imageUrl  String
   description String
   price Int 
-  customerScore Int
 
   order Order []
 
+@@map("product")
  }
 
   model Order {
@@ -63,6 +65,7 @@ model User {
 
   product Product[]
 
+@@map("order")
  }
 
    model Cart {
@@ -80,11 +83,12 @@ model User {
   order Order[]
   userAddress UserAddress[]
 
+@@map("cart")
  }
 
    model Payment {
   id       String  @id @default(uuid())
-  orderDetails     String 
+  paymentType     String
   cart   Cart?   @relation(fields: [cartId], references: [id])
   cartId String @map("cart_id") @unique
   status Boolean
@@ -92,4 +96,20 @@ model User {
   createAt DateTime @default(now()) @map("created_at")
   updateAt DateTime @updatedAt @map("updated_at")
 
+@@map("payment")
  }
+ 
+//  enum AddressType {
+//   residential
+//   comercial
+//   relatives
+//   neighbors
+//   other
+//  }
+
+//  enum PaymentType {
+//   creditCard
+//   invoice
+//   directTransfer
+// }
+ 
