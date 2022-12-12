@@ -15,7 +15,6 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { LoggedUser } from 'src/auth/logged-user.decorator';
 import { User } from 'src/user/entities/user.entity';
-
 @ApiTags('userAddress')
 @UseGuards(AuthGuard())
 @ApiBearerAuth('JWT')
@@ -35,8 +34,8 @@ export class UserAddressController {
   @ApiOperation({
     summary: 'Lista todos os endereços cadastrados do usuário',
   })
-  findAll() {
-    return this.userAddressService.findAll();
+  findAll(@LoggedUser() user: User) {
+    return this.userAddressService.findAll(user);
   }
 
   @Get(':id')

@@ -5,10 +5,10 @@ import {
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { User } from 'src/user/entities/user.entity';
 import { CreateUserAddressDto } from './dto/createUserAddress.dto';
 import { UpdateUserAddressDto } from './dto/updateUserAddress.dto';
 import { UserAddress } from './entities/userAddress.entity';
-
 @Injectable()
 export class UserAddressService {
   constructor(private readonly prisma: PrismaService) {}
@@ -34,15 +34,16 @@ export class UserAddressService {
         },
       });
     } catch (error) {
-      return this.handleError(
-        error,
-        'Não foi possível criar novo endereço de entrega',
-      );
+      return this.handleError;
     }
   }
 
-  findAll(): Promise<UserAddress[]> {
-    return this.prisma.userAddress.findMany();
+  findAll(user: User) {
+    return this.prisma.userAddress.findMany({
+      where: {
+        userId: user.id,
+      },
+    });
   }
 
   async findById(id: string): Promise<UserAddress> {

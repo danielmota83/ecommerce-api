@@ -1,14 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsString, IsUUID } from 'class-validator';
-import { AddressType } from '../entities/userAddress.entity';
+import { IsString, IsUUID } from 'class-validator';
 
 export class CreateUserAddressDto {
-  @IsEnum(AddressType)
+  @IsString()
   @ApiProperty({
     description: 'Tipo do endereço cadastrado',
     example: 'Endereço residencial',
   })
-  addressType: AddressType;
+  addressType: string;
 
   @IsString()
   @ApiProperty({

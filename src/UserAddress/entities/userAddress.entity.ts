@@ -10,7 +10,7 @@ export enum AddressType {
 export class UserAddress {
   id?: string;
   addressType: string;
-  addressInfo: AddressType;
+  addressInfo: string;
   user?: User;
   createdAt?: Date;
   updatedAt?: Date;
